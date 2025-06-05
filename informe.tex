@@ -8,6 +8,9 @@
 \usepackage{geometry}
 \geometry{a4paper, margin=2.5cm}
 
+\setlength{\headheight}{14.5pt}
+\addtolength{\topmargin}{-2.5pt}
+
 \titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
 \pagestyle{fancy}
 \fancyhf{}
@@ -32,6 +35,9 @@ En este laboratorio se implementa un sistema digital en Logisim para simular los
 \section{Descripción del problema}
 Don Bit construyó una ciudad digital donde los vehículos se guían por un código de 4 bits que define un nodo inicial en un grafo. Cada uno de los 16 códigos posibles activa una ruta única y secuencial hacia el nodo final común: F.
 
+% -------------------------------------------------------
+%    3. Diseño del sistema
+% -------------------------------------------------------
 \section{Diseño del sistema}
 
 La FSM consta de:
@@ -53,7 +59,7 @@ La FSM consta de:
 
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{diagram.png}
+% \includegraphics[width=0.8\textwidth]{diagram.png}
 \end{center}
 
 Donde:
@@ -65,6 +71,147 @@ Donde:
 \end{itemize}
 
 \subsection{Tablas de verdad}
+
+
+% ---------------------------
+% 3.4 Tabla de verdad del Decodificador 7 segmentos
+% ---------------------------
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c||c|c|c|c|c|c|c|}
+\hline
+\textbf{Dec} & \textbf{Binario} & \textbf{Nodo} 
+  & \textbf{a} & \textbf{b} & \textbf{c} & \textbf{d} & \textbf{e} & \textbf{f} & \textbf{g} \\
+\hline
+0  & 0000 & A & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\  
+1  & 0001 & B & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
+2  & 0010 & C & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\  
+3  & 0011 & D & 0 & 1 & 1 & 1 & 1 & 0 & 1 \\  
+4  & 0100 & E & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\  
+5  & 0101 & F & 1 & 0 & 0 & 0 & 1 & 1 & 1 \\  
+6  & 0110 & G & 1 & 1 & 0 & 1 & 1 & 1 & 1 \\  
+7  & 0111 & H & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\  
+8  & 1000 & I & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
+9  & 1001 & J & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\  
+10 & 1010 & K & 1 & 1 & 0 & 1 & 1 & 1 & 1 \\  
+11 & 1011 & L & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\  
+12 & 1100 & M & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\  
+13 & 1101 & N & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\  
+14 & 1110 & O & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\  
+15 & 1111 & P & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
+\hline
+\end{tabular}
+\caption{Tabla de verdad del decodificador de 7 segmentos para nodos A–P.}
+\label{tab:7seg_decoder}
+\end{table}
+
+% ---------------------------
+% 3.4.1 Mapas de Karnaugh para el Decodificador 7 segmentos
+% ---------------------------
+\bigskip
+\noindent
+
+\medskip
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{a}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 1 & 1 & 1 & 0 \\
+01       & 1 & 1 & 1 & 0 \\
+11       & 1 & 1 & 1 & 0 \\
+10       & 1 & 1 & 1 & 0 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{b}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 1 & 1 & 0 & 1 \\
+01       & 0 & 1 & 1 & 1 \\
+11       & 1 & 1 & 1 & 1 \\
+10       & 1 & 1 & 1 & 1 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{c}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 1 & 1 & 1 & 1 \\
+01       & 0 & 1 & 0 & 1 \\
+11       & 1 & 0 & 1 & 1 \\
+10       & 1 & 1 & 1 & 0 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{d}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 0 & 1 & 1 & 1 \\
+01       & 1 & 1 & 1 & 1 \\
+11       & 1 & 1 & 1 & 1 \\
+10       & 1 & 1 & 1 & 1 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{e}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 1 & 1 & 1 & 1 \\
+01       & 1 & 1 & 1 & 1 \\
+11       & 1 & 1 & 1 & 1 \\
+10       & 1 & 1 & 1 & 1 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{f}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 1 & 1 & 1 & 1 \\
+01       & 1 & 1 & 1 & 1 \\
+11       & 1 & 1 & 1 & 1 \\
+10       & 1 & 1 & 1 & 1 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
+\textbf{Mapa K‐map de segmento \textsf{g}}  
+\[
+\begin{array}{c|cccc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{b_1b_0=00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\hline
+b_3b_2=00 & 1 & 0 & 1 & 0 \\
+01       & 1 & 0 & 1 & 0 \\
+11       & 1 & 0 & 1 & 0 \\
+10       & 1 & 0 & 1 & 0 \\
+\end{array}
+\]
+\vspace{1em}
+
+\noindent
 
 \subsection{Mapas de Karnaugh}
 

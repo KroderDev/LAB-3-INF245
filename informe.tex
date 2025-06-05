@@ -34,7 +34,35 @@ Don Bit construyó una ciudad digital donde los vehículos se guían por un cód
 
 \section{Diseño del sistema}
 
+La FSM consta de:
+
+1. Un registro de 4 bits que almacena el “estado actual” (el nodo en el grafo).  
+2. Lógica combinacional de \textbf{próximo estado} (Next–State) que, para cada contenido actual del registro, produce los 4 bits del nodo siguiente.  
+3. Un decodificador a 7 segmentos que, a partir de los 4 bits del estado, activa las líneas del display para mostrar la letra del nodo (A–P).  
+4. Una señal de “Enable” que detiene la máquina en cuanto se alcanza el nodo final (F).
+
 \subsection{Algoritmo general}
+
+\begin{itemize}
+  \item \textbf{Entrada inicial:} El usuario ingresa un código de 4 bits (b3\,b2\,b1\,b0), que corresponde a un número decimal entre 0 y 15. Cada valor 0–15 identifica un nodo inicial del grafo (\texttt{A}, \texttt{B}, …, \texttt{P}).
+  \item \textbf{Estado inicial:} Al presionar “Reset”, el registro de estado carga directamente el código de 4 bits ingresado, es decir, el nodo de partida.
+  \item \textbf{Transiciones:} En cada flanco de subida del reloj, si Enable = 1, el registro pasa de “Estado\_actual” a “Estado\_siguiente” de acuerdo con la ruta predefinida. Esa ruta se deriva del grafo de Bitópolis: cada estado (nodo) tiene exactamente un sucesor, salvo el nodo \texttt{F} (código 5), que es el “destino final” y se mantiene en sí mismo.
+  \item \textbf{Detención:} Cuando el registro de estado contiene el código del nodo \texttt{F} (decimal\,5), la señal Enable pasa a 0 y la máquina deja de avanzar (queda “retenida” en \texttt{F}).
+  \item \textbf{Visualización:} El decodificador 7 segmentos traduce los 4 bits del “Estado\_actual” a los segmentos a–g para que se muestre la letra correspondiente.  
+\end{itemize}
+
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{diagram.png}
+\end{center}
+
+Donde:
+\begin{itemize}
+  \item El bloque \textbf{Registro\_Estado (4\,D–FF)} guarda el nodo actual.  
+  \item El bloque \textbf{Next\_State (Lógica combinacional 4 $\to$ 4)} calcula, a partir del contenido del registro, el código de los 4 bits del nodo siguiente.  
+  \item El bloque \textbf{Decodificador\_7seg (4 $\to$ 7)} traduce el código binario del nodo (0–15) a los 7 bits que activan cada segmento del display.  
+  \item La señal \textbf{Enable} se genera mediante comparación (Estado\_actual $==$ 5) y se emplea para inhabilitar el reloj al llegar a \texttt{F}.  
+\end{itemize}
 
 \subsection{Tablas de verdad}
 

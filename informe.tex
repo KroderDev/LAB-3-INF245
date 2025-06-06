@@ -20,7 +20,7 @@
 
 \title{\textbf{INF245 – Laboratorio 3} \\ Don Bit y Bitópolis}
 \author{
-    Sebastián Richiardi Pérez – 20203055-2 – 201\\
+    Sebastián Richiardi Pérez – 202030555-2 – 201\\
     Gabriel Alejandro Toro Varela – 202204557-4 – 201
 }
 \date{02 de junio de 2025}
@@ -85,21 +85,21 @@ Donde:
   & \textbf{a} & \textbf{b} & \textbf{c} & \textbf{d} & \textbf{e} & \textbf{f} & \textbf{g} \\
 \hline
 0  & 0000 & A & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\  
-1  & 0001 & B & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
-2  & 0010 & C & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\  
+1  & 0001 & B & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\  
+2  & 0010 & C & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\  
 3  & 0011 & D & 0 & 1 & 1 & 1 & 1 & 0 & 1 \\  
 4  & 0100 & E & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\  
 5  & 0101 & F & 1 & 0 & 0 & 0 & 1 & 1 & 1 \\  
-6  & 0110 & G & 1 & 1 & 0 & 1 & 1 & 1 & 1 \\  
-7  & 0111 & H & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\  
-8  & 1000 & I & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
-9  & 1001 & J & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\  
-10 & 1010 & K & 1 & 1 & 0 & 1 & 1 & 1 & 1 \\  
-11 & 1011 & L & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\  
-12 & 1100 & M & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\  
-13 & 1101 & N & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\  
-14 & 1110 & O & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\  
-15 & 1111 & P & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
+6  & 0110 & G & 1 & 0 & 1 & 1 & 1 & 1 & 0 \\  
+7  & 0111 & H & 0 & 1 & 1 & 0 & 1 & 1 & 1 \\  
+8  & 1000 & I & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\  
+9  & 1001 & J & 0 & 1 & 1 & 1 & 1 & 0 & 0 \\  
+10 & 1010 & K & 1 & 0 & 1 & 0 & 1 & 1 & 1 \\  
+11 & 1011 & L & 0 & 0 & 0 & 1 & 1 & 1 & 0 \\  
+12 & 1100 & M & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\  
+13 & 1101 & N & 1 & 0 & 1 & 0 & 1 & 0 & 0 \\  
+14 & 1110 & O & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\  
+15 & 1111 & P & 1 & 1 & 0 & 0 & 1 & 1 & 1 \\  
 \hline
 \end{tabular}
 \caption{Tabla de verdad del decodificador de 7 segmentos para nodos A–P.}
@@ -110,119 +110,146 @@ Donde:
 % 3.4.1 Mapas de Karnaugh para el Decodificador 7 segmentos
 % ---------------------------
 \bigskip
-\noindent
 
-\medskip
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{a}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
-00 & 1 & 1 & 1 & 0 \\
-01       & 1 & 1 & 1 & 0 \\
-11       & 1 & 1 & 1 & 0 \\
-10       & 1 & 1 & 1 & 0 \\
+00 & 1 & 0 & 0 & 1 \\
+01 & 1 & 1 & 0 & 1 \\
+11 & 1 & 1 & 1 & 1 \\
+10 & 0 & 0 & 0 & 1 \\
 \end{array}
 \]
 \vspace{1em}
+
+\noindent
+\textbf{Función minimizada para \(a\):}
+\[
+x_3x_2 + x_2\overline{x_1} + \overline{x_3}\,\overline{x_1}\,\overline{x_0} + x_1\,\overline{x_0}
+\]
 
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{b}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
-00 & 1 & 1 & 0 & 1 \\
-01       & 0 & 1 & 1 & 1 \\
-11       & 1 & 1 & 1 & 1 \\
-10       & 1 & 1 & 1 & 1 \\
+00 & 1 & 0 & 1 & 0 \\
+01 & 0 & 0 & 1 & 0 \\
+11 & 1 & 0 & 1 & 1 \\
+10 & 1 & 1 & 0 & 0 \\
 \end{array}
 \]
 \vspace{1em}
+
+\noindent
+\textbf{Función minimizada para \(b\):}
+\[
+\overline{x_2}\,\overline{x_1}\,\overline{x_0} + x_3\,\overline{x_2}\,\overline{x_1} + \overline{x_3}\,x_1\,x_0 + x_2\,x_1\,x_0 + x_3\,x_2\,x_1
+\]
 
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{c}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
-00 & 1 & 1 & 1 & 1 \\
-01       & 0 & 1 & 0 & 1 \\
-11       & 1 & 0 & 1 & 1 \\
-10       & 1 & 1 & 1 & 0 \\
+00 & 1 & 1 & 1 & 0 \\
+01 & 0 & 0 & 1 & 1 \\
+11 & 1 & 1 & 0 & 1 \\
+10 & 1 & 1 & 0 & 1 \\
 \end{array}
 \]
 \vspace{1em}
+
+\noindent
+\textbf{Función minimizada para \(c\):}
+\[
+\overline{x_2}\,\overline{x_1} + \overline{x_3}\,\overline{x_2}\,x_0 + \overline{x_3}\,x_2\,x_1 + x_3\,x_1\,\overline{x_0} + x_3\,x_2\,\overline{x_1}
+\]
 
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{d}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
 00 & 0 & 1 & 1 & 1 \\
-01       & 1 & 1 & 1 & 1 \\
-11       & 1 & 1 & 1 & 1 \\
-10       & 1 & 1 & 1 & 1 \\
+01 & 1 & 0 & 0 & 1 \\
+11 & 0 & 0 & 0 & 1 \\
+10 & 0 & 1 & 1 & 0 \\
 \end{array}
 \]
 \vspace{1em}
+
+\noindent
+\textbf{Función minimizada para \(d\):}
+\[
+\overline{x_3}\,x_1\,\overline{x_0} + \overline{x_3}\,\overline{x_2}\,x_1 + x_2\,x_1\,\overline{x_0} + \overline{x_3}\,\overline{x_2}\,x_0 + x_3\,\overline{x_2}\,x_0 + \overline{x_3}\,x_2\,\overline{x_1}\,\overline{x_0}
+\]
 
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{e}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
 00 & 1 & 1 & 1 & 1 \\
-01       & 1 & 1 & 1 & 1 \\
-11       & 1 & 1 & 1 & 1 \\
-10       & 1 & 1 & 1 & 1 \\
+01 & 1 & 1 & 1 & 1 \\
+11 & 1 & 1 & 1 & 1 \\
+10 & 0 & 1 & 1 & 1 \\
 \end{array}
 \]
 \vspace{1em}
+
+\noindent
+\textbf{Función minimizada para \(e\):}
+\[
+\overline{x_3} + x_2 + x_1 + x_0
+\]
 
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{f}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
-00 & 1 & 1 & 1 & 1 \\
-01       & 1 & 1 & 1 & 1 \\
-11       & 1 & 1 & 1 & 1 \\
-10       & 1 & 1 & 1 & 1 \\
+00 & 1 & 1 & 0 & 1 \\
+01 & 1 & 1 & 1 & 1 \\
+11 & 0 & 0 & 1 & 1 \\
+10 & 0 & 0 & 1 & 1 \\
 \end{array}
 \]
 \vspace{1em}
+
+\noindent
+\textbf{Función minimizada para \(f\):}
+\[
+x_3\,x_1 + \overline{x_3}\,x_2 + \overline{x_3}\,\overline{x_2}\,\overline{x_1} + x_1\,\overline{x_0}
+\]
 
 \noindent
 \textbf{Mapa K‐map de segmento \textsf{g}}  
 \[
 \begin{array}{c|cccc}
-\multicolumn{1}{c}{b_1b_0/b_3b_2} & \multicolumn{1}{c}{00} & \multicolumn{1}{c}{01} & \multicolumn{1}{c}{11} & \multicolumn{1}{c}{10} \\
+\multicolumn{1}{c}{x_3x_2 / x_1x_0} & 00 & 01 & 11 & 10 \\
 \hline
-00 & 1 & 0 & 1 & 0 \\
-01       & 1 & 0 & 1 & 0 \\
-11       & 1 & 0 & 1 & 0 \\
-10       & 1 & 0 & 1 & 0 \\
+00 & 1 & 1 & 1 & 0 \\
+01 & 1 & 1 & 1 & 0 \\
+11 & 1 & 0 & 1 & 0 \\
+10 & 0 & 0 & 0 & 1 \\
 \end{array}
 \]
 \vspace{1em}
 
 \noindent
-
-\subsection{Mapas de Karnaugh}
-
-\subsection{Subcircuitos}
-
-\begin{itemize}
-    \item Nombre
-    \item Función
-    \item Entradas y salidas
-    \item Interacción con otros módulos
-\end{itemize}
+\textbf{Función minimizada para \(g\):}
+\[
+\overline{x_3}\,\overline{x_1} + \overline{x_3}\,x_1\,x_0 + x_2\,\overline{x_1}\,\overline{x_0} + x_2\,x_1\,x_0 + x_3\,\overline{x_2}\,x_1\,\overline{x_0}
+\]
 
 \section{Simulación en Logisim}
 

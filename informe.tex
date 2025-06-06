@@ -7,6 +7,7 @@
 \usepackage{titlesec}
 \usepackage{geometry}
 \geometry{a4paper, margin=2.5cm}
+\usepackage{float}
 
 \setlength{\headheight}{14.5pt}
 \addtolength{\topmargin}{-2.5pt}
@@ -70,14 +71,15 @@ Donde:
   \item La señal \textbf{Enable} se genera mediante comparación (Estado\_actual $==$ 5) y se emplea para inhabilitar el reloj al llegar a \texttt{F}.  
 \end{itemize}
 
-\subsection{Tablas de verdad}
+\newpage
 
+\subsection*{Subcircuito \texttt{Decodificador 7 segmentos}}
 
 % ---------------------------
 % 3.4 Tabla de verdad del Decodificador 7 segmentos
 % ---------------------------
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c||c|c|c|c|c|c|c|}
 \hline
@@ -251,9 +253,282 @@ x_3\,x_1 + \overline{x_3}\,x_2 + \overline{x_3}\,\overline{x_2}\,\overline{x_1} 
 \overline{x_3}\,\overline{x_1} + \overline{x_3}\,x_1\,x_0 + x_2\,\overline{x_1}\,\overline{x_0} + x_2\,x_1\,x_0 + x_3\,\overline{x_2}\,x_1\,\overline{x_0}
 \]
 
-\section{Simulación en Logisim}
+\newpage
 
-\section{Pruebas}
+% ------------------------------------------------------------
+% Subcircuito “NextState”: tabla de verdad, mapas de Karnaugh y funciones minimizadas
+% ------------------------------------------------------------
+
+\subsection*{Subcircuito \texttt{NextState}}
+
+El subcircuito \texttt{NextState} recibe como entrada el código en binario de 4\,bits  
+\((s_{3},s_{2},s_{1},s_{0})\) que representa el nodo actual (A…P) y produce como salida  
+el código en binario de 4\,bits \((n_{3},n_{2},n_{1},n_{0})\) correspondiente al siguiente nodo en la ruta. 
+
+% ------------------------------------------------------------
+% 1) Tabla de verdad del subcircuito NextState
+% ------------------------------------------------------------
+\begin{table}[H]
+  \centering
+  \begin{tabular}{cccc|cccc}
+    \multicolumn{4}{c|}{\bf Estado presente} & \multicolumn{4}{c}{\bf NextState}\\
+    \multicolumn{4}{c|}{\((s_{3}\;\;s_{2}\;\;s_{1}\;\;s_{0})\)} & \multicolumn{4}{c}{\((n_{3}\;\;n_{2}\;\;n_{1}\;\;n_{0})\)}\\
+    \hline
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ % A → B
+    0 & 0 & 0 & 1 & 0 & 0 & 1 & 1 \\ % B → D
+    0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 \\ % C → B
+    0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 \\ % D → I
+    0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 \\ % E → D
+    0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ % F → F
+    0 & 1 & 1 & 0 & 0 & 1 & 1 & 1 \\ % G → H
+    0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 \\ % H → M
+    1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\ % I → J
+    1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\ % J → M
+    1 & 0 & 1 & 0 & 1 & 1 & 0 & 1 \\ % K → N
+    1 & 0 & 1 & 1 & 1 & 1 & 0 & 1 \\ % L → N
+    1 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\ % M → O
+    1 & 1 & 0 & 1 & 1 & 1 & 1 & 1 \\ % N → P
+    1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 \\ % O → F
+    1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 \\ % P → F
+  \end{tabular}
+  \caption{Tabla de verdad del subcircuito \texttt{NextState}. Cada fila indica la transición  
+    desde el estado presente \((s_{3}\,s_{2}\,s_{1}\,s_{0})\) al siguiente \((n_{3}\,n_{2}\,n_{1}\,n_{0})\).}
+\end{table}
+
+\bigskip
+
+% ------------------------------------------------------------
+% 2) Mapas de Karnaugh
+% ------------------------------------------------------------
+
+\subsubsection*{Mapas de Karnaugh para cada bit de salida}
+
+Se usarán mapas de Karnaugh 4×4 con la convención Gray en filas \((s_3\,s_2)\) y columnas \((s_1\,s_0)\).  
+
+\paragraph*{(a) Mapa de Karnaugh para \(n_{3}(s_{3},s_{2},s_{1},s_{0})\).}
+
+\begin{center}
+\begin{tabular}{c|cccc}
+  \multicolumn{1}{c}{} & \multicolumn{4}{c}{\((s_{1}\,s_{0})\)} \\[-2pt]
+  \cline{2-5}
+  \((s_{3}\,s_{2})\) & 00 & 01 & 11 & 10 \\
+  \cline{1-5}
+  00 & 0 & 0 & \bf1 & 0 \\  % minterm 3
+  01 & 0 & 0 & \bf1 & 0 \\  % minterm 7
+  11 & \bf1 & \bf1 & 0 & 0 \\% minterms 12, 13
+  10 & \bf1 & \bf1 & \bf1 & \bf1 \\ % minterms 8,9,11,10
+  \cline{1-5}
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Agrupaciones:}
+\begin{itemize}
+  \item \(\{8,9,11,10\}\) (fila \(s_{3}s_{2}=10\) entera) \(\;\longrightarrow\; s_{3}\,\overline{s_{2}}\).
+  \item \(\{8,9,12,13\}\) (\(\,(s_{3}s_{2})\in\{10,11\},\,(s_{1}s_{0})\in\{00,01\}\))  
+    \(\;\longrightarrow\; s_{3}\,\overline{s_{1}}\).
+  \item \(\{3,7\}\) (\((s_{3}s_{2})\in\{00,01\},\,(s_{1}s_{0})=11\))  
+    \(\;\longrightarrow\; \overline{s_{3}}\,s_{1}\,s_{0}\).
+\end{itemize}
+
+\noindent
+\textbf{Función minimizada para \(n_{3}\):}
+\[
+  n_{3} \;=\; 
+    \underbrace{s_{3}\,\overline{s_{2}}}_{\text{(fila 10)}} 
+    \;+\; 
+    \underbrace{s_{3}\,\overline{s_{1}}}_{\substack{\text{(filas 10–11 en}\\(s_{1}s_{0})\in\{00,01\})}} 
+    \;+\; 
+    \underbrace{\overline{s_{3}}\,s_{1}\,s_{0}}_{\text{(columnas 11)}}.
+\]
+
+\bigskip
+
+\paragraph*{(b) Mapa de Karnaugh para \(n_{2}(s_{3},s_{2},s_{1},s_{0})\).}
+
+\begin{center}
+\begin{tabular}{c|cccc}
+  \multicolumn{1}{c}{} & \multicolumn{4}{c}{\((s_{1}\,s_{0})\)} \\[-2pt]
+  \cline{2-5}
+  \((s_{3}\,s_{2})\) & 00 & 01 & 11 & 10 \\
+  \cline{1-5}
+  00 & 0 & 0 & 0 & 0 \\ 
+  01 & 0 & \bf1 & \bf1 & \bf1 \\ % minterms 5,7,6
+  11 & \bf1 & \bf1 & \bf1 & \bf1 \\% minterms 12,13,15,14
+  10 & 0 & \bf1 & \bf1 & \bf1 \\ % minterms 9,11,10
+  \cline{1-5}
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Agrupaciones:}
+\begin{itemize}
+  \item \(\{12,13,15,14\}\) (fila \(s_{3}s_{2}=11\) entera)  
+    \(\;\longrightarrow\; s_{3}\,s_{2}.\)
+  \item \(\{6,7,15,14\}\) (\((s_{3}s_{2})\in\{01,11\},\,(s_{1}s_{0})\in\{11,10\}\))  
+    \(\;\longrightarrow\; s_{2}\,s_{1}.\)
+  \item \(\{6,7,11,10\}\) (\((s_{3}s_{2})\in\{01,10\},\,(s_{1}s_{0})\in\{11,10\}\))  
+    \(\;\longrightarrow\; s_{1}.\)
+  \item \(\{9,13\}\) (\((s_{3}s_{2})\in\{10,11\},\,(s_{1}s_{0})=01\))  
+    \(\;\longrightarrow\; s_{3}\,s_{0}.\)
+  \item \(\{10,14\}\) (\((s_{3}s_{2})\in\{10,11\},\,(s_{1}s_{0})=10\))  
+    \(\;\longrightarrow\; s_{2}\,s_{0}.\)
+\end{itemize}
+
+\noindent
+\textbf{Función minimizada para \(n_{2}\):}
+\[
+  n_{2} \;=\; 
+    \underbrace{s_{3}\,s_{2}}_{\{12,13,15,14\}} 
+    \;+\; 
+    \underbrace{s_{2}\,s_{1}}_{\{6,7,15,14\}} 
+    \;+\; 
+    \underbrace{s_{1}}_{\{6,7,11,10\}} 
+    \;+\; 
+    \underbrace{s_{3}\,s_{0}}_{\{9,13\}} 
+    \;+\; 
+    \underbrace{s_{2}\,s_{0}}_{\{10,14\}}.
+\]
+
+\bigskip
+
+\paragraph*{(c) Mapa de Karnaugh para \(n_{1}(s_{3},s_{2},s_{1},s_{0})\).}
+
+\begin{center}
+\begin{tabular}{c|cccc}
+  \multicolumn{1}{c}{} & \multicolumn{4}{c}{\((s_{1}\,s_{0})\)} \\[-2pt]
+  \cline{2-5}
+  \((s_{3}\,s_{2})\) & 00 & 01 & 11 & 10 \\
+  \cline{1-5}
+  00 & 0 & \bf1 & 0 & 0 \\   % minterm 1
+  01 & \bf1 & 0 & 0 & \bf1 \\% minterms 4,6
+  11 & \bf1 & \bf1 & 0 & 0 \\% minterms 12,13
+  10 & 0 & 0 & 0 & 0 \\ 
+  \cline{1-5}
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Agrupaciones:}
+\begin{itemize}
+  \item \(\{4,12\}\) (fila \(s_{3}s_{2}=01,11\), columna “00”):  
+    \[
+      s_{1}=0,\;s_{0}=0,\;s_{2}=1,\;(s_{3}\text{ varía})  
+      \;\longrightarrow\; s_{2}\,\overline{s_{1}}\,\overline{s_{0}}.
+    \]
+  \item \(\{12,13\}\) (fila \(s_{3}s_{2}=11\), columnas \(\{00,01\}\)):  
+    \[
+      s_{3}=1,\;s_{2}=1,\;s_{1}=0,\;(s_{0}\text{ varía})  
+      \;\longrightarrow\; s_{3}\,s_{2}\,\overline{s_{1}}.
+    \]
+  \item \(\{6\}\) (aislado en fila “01”, columna “10”):  
+    \[
+      (s_{3},s_{2},s_{1},s_{0}) = (0,1,1,0)  
+      \;\longrightarrow\; \overline{s_{3}}\,s_{2}\,s_{1}\,\overline{s_{0}}.
+    \]
+  \item \(\{1\}\) (aislado en fila “00”, columna “01”):  
+    \[
+      (s_{3},s_{2},s_{1},s_{0}) = (0,0,0,1)  
+      \;\longrightarrow\; \overline{s_{3}}\,\overline{s_{2}}\,\overline{s_{1}}\,s_{0}.
+    \]
+\end{itemize}
+
+\noindent
+\textbf{Función minimizada para \(n_{1}\):}
+\[
+  n_{1} 
+  \;=\; 
+    \underbrace{\bigl(\overline{s_{3}}\,s_{2}\,\overline{s_{0}}\bigr)}_{\{4,6\}} 
+    \;+\; 
+    \underbrace{\bigl(s_{3}\,s_{2}\,\overline{s_{1}}\bigr)}_{\{12,13\}} 
+    \;+\; 
+    \underbrace{\bigl(\overline{s_{3}}\,\overline{s_{2}}\,\overline{s_{1}}\,s_{0}\bigr)}_{\{1\}}.
+\]
+
+\bigskip
+
+\paragraph*{(d) Mapa de Karnaugh para \(n_{0}(s_{3},s_{2},s_{1},s_{0})\).}
+
+\begin{center}
+\begin{tabular}{c|cccc}
+  \multicolumn{1}{c}{} & \multicolumn{4}{c}{\((s_{1}\,s_{0})\)} \\[-2pt]
+  \cline{2-5}
+  \((s_{3}\,s_{2})\) & 00 & 01 & 11 & 10 \\
+  \cline{1-5}
+  00 & \bf1 & \bf1 & 0 & \bf1 \\   % minterms 0,1,2
+  01 & \bf1 & \bf1 & 0 & \bf1 \\   % minterms 4,5,6
+  11 & 0    & \bf1 & \bf1 & \bf1 \\% minterms 13,14,15
+  10 & \bf1 & 0    & \bf1 & \bf1 \\% minterms 8,10,11
+  \cline{1-5}
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Agrupaciones:}
+\begin{itemize}
+  \item \(\{0,1,4,5\}\) (filas “00–01”, columnas “00–01”):  
+    \(\;s_{3}=0,\;s_{1}=0\;\longrightarrow\;\overline{s_{3}}\,\overline{s_{1}}\).
+  \item \(\{0,2,4,6\}\) (imbuída: filas “00–01”, columnas “00–10” (envolvente)):  
+    \(\;s_{3}=0,\;s_{0}=0\;\longrightarrow\;\overline{s_{3}}\,\overline{s_{0}}\).
+  \item \(\{10,11,14,15\}\) (filas “10–11”, columnas “10–11”):  
+    \(\;s_{3}=1,\;s_{1}=1\;\longrightarrow\;s_{3}\,s_{1}\).
+  \item \(\{8,10\}\) (fila “10”, columnas “00–10”):  
+    \(\;s_{3}=1,\;s_{0}=0\;\longrightarrow\;s_{3}\,\overline{s_{0}}\).
+  \item \(\{13\}\) (aislado en fila “11”, columna “01”):  
+    \(\;(s_{3},s_{2},s_{1},s_{0})=(1,1,0,1)\;\longrightarrow\;s_{3}\,s_{2}\,\overline{s_{1}}\,s_{0}.\)
+\end{itemize}
+
+\noindent
+\textbf{Función minimizada para \(n_{0}\):}
+\[
+  n_{0} 
+  \;=\; 
+    \underbrace{\bigl(\overline{s_{3}}\,\overline{s_{1}}\bigr)}_{p_{1}} 
+    \;+\; 
+    \underbrace{\bigl(\overline{s_{3}}\,\overline{s_{0}}\bigr)}_{p_{2}} 
+    \;+\; 
+    \underbrace{\bigl(s_{3}\,s_{1}\bigr)}_{p_{3}} 
+    \;+\; 
+    \underbrace{\bigl(s_{3}\,\overline{s_{0}}\bigr)}_{p_{5}} 
+    \;+\; 
+    \underbrace{\bigl(s_{3}\,s_{2}\,\overline{s_{1}}\,s_{0}\bigr)}_{p_{6}}.
+\]
+
+\bigskip
+
+% ------------------------------------------------------------
+% 3) Resumen de las funciones lógicas
+% ------------------------------------------------------------
+
+\subsubsection*{Funciones lógicas minimizadas finales}
+
+Finalmente, las cuatro salidas \((n_{3},n_{2},n_{1},n_{0})\) se describen mediante:
+
+\[
+\begin{aligned}
+  n_{3}(s_{3},s_{2},s_{1},s_{0})
+  &=\, s_{3}\,\overline{s_{2}}
+    \;+\; s_{3}\,\overline{s_{1}}
+    \;+\; \overline{s_{3}}\,s_{1}\,s_{0},\\[6pt]
+  n_{2}(s_{3},s_{2},s_{1},s_{0})
+  &=\, s_{3}\,s_{2}
+    \;+\; s_{2}\,s_{1}
+    \;+\; s_{1}
+    \;+\; s_{3}\,s_{0}
+    \;+\; s_{2}\,s_{0},\\[6pt]
+  n_{1}(s_{3},s_{2},s_{1},s_{0})
+  &=\, \overline{s_{3}}\,s_{2}\,\overline{s_{0}}
+    \;+\; s_{3}\,s_{2}\,\overline{s_{1}}
+    \;+\; \overline{s_{3}}\,\overline{s_{2}}\,\overline{s_{1}}\,s_{0},\\[6pt]
+  n_{0}(s_{3},s_{2},s_{1},s_{0})
+  &=\, \overline{s_{3}}\,\overline{s_{1}}
+    \;+\; \overline{s_{3}}\,\overline{s_{0}}
+    \;+\; s_{3}\,s_{1}
+    \;+\; s_{3}\,\overline{s_{0}}
+    \;+\; s_{3}\,s_{2}\,\overline{s_{1}}\,s_{0}.
+\end{aligned}
+\]
+
 
 \section{Supuestos}
 \begin{itemize}
